@@ -15,6 +15,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-dev --optimize-autoloader || true
 RUN cp .env.example .env
+RUN touch /tmp/database.sqlite
+RUN php artisan migrate --force || true
+
 
 RUN chmod -R 777 storage bootstrap/cache
 
