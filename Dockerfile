@@ -19,8 +19,10 @@ COPY . .
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-dev --optimize-autoloader
-RUN php artisan key:generate
 RUN cp .env.example .env
+ENV APP_ENV=production
+RUN php artisan key:generate --force
+RUN chmod -R 775 storage bootstrap/cache
 
 
 RUN chown -R www-data:www-data storage bootstrap/cache
